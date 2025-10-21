@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hostel/Rental Finder</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+      .property-card {
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+        padding: 10px;
+        display: flex;
+      }
+      .property-image {
+        width: 150px;
+        height: 100px;
+        object-fit: cover;
+        margin-right: 10px;
+      }
+      .filters {
+        margin-bottom: 20px;
+      }
+      section {
+        padding: 20px;
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+          <div class="container">
+                  <div class="logo">
+                 <a href="#" style="color: white;" >KSU 
+                  <span>Hostel Searching page</span></a>
+              </div>
+      <!-- Navigation Links and Contact Number -->
+      
+              <span class="hamburger"  id="hamburger" onclick="toggleMenu()">&#9776;</span>
+              <ul class="navbar-nav" id="navbarNav">
+                  <li class="nav-item">
+                      <a href="index.html" class="nav-link">Home</a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="rooms.html" class="nav-link">Rooms</a>
+                  </li>            
+                  <li class="nav-item">
+                      <a href="about.html" class="nav-link">About</a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="contact.html" class="nav-link">Contact</a>
+                  </li>
+              </ul>
+          </div>
+      </nav>
+      </div>
+      </div>
+      </header>
+<div class="hero-text">
+    <h1>Find Your Ideal Home</h1>
+</div>
+  <div class="filters">
+    <input type="text" id="locationFilter" placeholder="Location">
+    <select id="typeFilter">
+      <option value="Both">Both</option>
+      <option value="Hostel">Hostel</option>
+      <option value="Rental">Rental</option>
+    </select>
+    <input type="number" id="minPriceFilter" placeholder="Min Price">
+    <input type="number" id="maxPriceFilter" placeholder="Max Price">
+    <button id="searchButton">Search</button>
+  </div>
+  <div id="results">
+     </div>
+     
+     <!-- Footer Section -->
+<footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="rooms.html">Rooms</a></li>          
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+  
+      <div class="footer-socials">
+        <h3>Follow Us</h3>
+        <ul>
+          <li><a href="#" target="_blank">Instagram</a></li>
+          <li><a href="#" target="_blank">Facebook</a></li>
+          <li><a href="#" target="_blank">X.com</a></li>
+          <li><a href="#" target="_blank">LinkedIn</a></li>
+        </ul>
+      </div>
+  
+      <!-- Newsletter Section -->
+      <div class="footer-newsletter">
+        <h3>Subscribe to Our Newsletter</h3>
+        <p>Stay updated with the latest vacancy available</p>
+        <form action="subscribe.php" method="POST">
+          <input type="email" name="email" placeholder="Enter your email" required>
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+
+    <p>&copy; 2025 Kisii University Hostel Managers</p>
+</footer>
+
+  <script>
+    // Sample property data (replace with your actual data)
+    const properties = [
+      {
+        type: "Hostel",
+        location: "Ict",
+        price: 15000,
+        amenities: ["Wi-Fi", ""],
+        image: "room1.jpeg",
+        title: "Inka",
+        description: "A friendly hostel in the heart of the city.",
+        id: 1,
+      },
+      {
+        type: "Rental",
+        location: "kisumu ndogo",
+        price: 4500,
+        amenities: ["Wi-fi", "beautiful view"],
+        image: "room 2.jpeg",
+        title: "Pasgart",
+        description: "A spacious apartment in a quiet neighborhood.",
+        id: 2,
+      },
+      {
+        type: "Hostel",
+        location: "CZ",
+        price: 12000,
+        amenities: ["Wi-Fi", "pool table"],
+        image: "room3.jpeg",
+        title: "CZ Hostel",
+        description: "A student friendly hostel near the university.",
+        id: 3,
+      },
+      {
+        type: "Rental",
+        location: "main gate",
+        price: 5000,
+        amenities: ["Laundry", "Wi-Fi"],
+        image: "room 4.jpeg",
+        title: "Luxury rental",
+        description: "A luxurious rental a step away from the school.",
+        id: 4,
+      }
+    ];
+
+    function displayProperties(filteredProperties) {
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = ""; // Clear previous results
+
+      filteredProperties.forEach(property => {
+        const propertyCard = document.createElement("div");
+        propertyCard.className = "property-card";
+
+        const image = document.createElement("img");
+        image.src = property.image;
+        image.className = "property-image";
+
+        const details = document.createElement("div");
+        details.innerHTML = `
+          <h3>${property.title} (${property.type})</h3>
+          <p>Location: ${property.location}</p>
+          <p>Price: ${property.price}Ksh</p>
+          <p>Amenities: ${property.amenities.join(", ")}</p>
+          <p>${property.description}</p>
+          <a href="property_details.html?id=${property.id}">View Details</a>
+        `;
+
+        propertyCard.appendChild(image);
+        propertyCard.appendChild(details);
+        resultsDiv.appendChild(propertyCard);
+      });
+    }
+
+    function filterProperties(properties, filters) {
+      return properties.filter(property => {
+        if (filters.location && !property.location.toLowerCase().includes(filters.location.toLowerCase())) {
+          return false;
+        }
+        if (filters.type && filters.type !== "Both" && property.type !== filters.type) {
+          return false;
+        }
+        if (filters.minPrice && property.price < filters.minPrice) {
+          return false;
+        }
+        if (filters.maxPrice && property.price > filters.maxPrice) {
+          return false;
+        }
+        return true;
+      });
+    }
+
+    document.getElementById("searchButton").addEventListener("click", () => {
+      const locationFilter = document.getElementById("locationFilter").value;
+      const typeFilter = document.getElementById("typeFilter").value;
+      const minPriceFilter = parseInt(document.getElementById("minPriceFilter").value) || 0;
+      const maxPriceFilter = parseInt(document.getElementById("maxPriceFilter").value) || Infinity;
+
+      const filters = {
+        location: locationFilter,
+        type: typeFilter,
+        minPrice: minPriceFilter,
+        maxPrice: maxPriceFilter,
+      };
+
+      const filteredProperties = filterProperties(properties, filters);
+      displayProperties(filteredProperties);
+    });
+
+    // Initial display of all properties
+    displayProperties(properties);
+  </script>
+</body>
+</html>
