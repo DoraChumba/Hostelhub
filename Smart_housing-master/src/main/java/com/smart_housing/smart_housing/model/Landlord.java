@@ -2,6 +2,7 @@ package com.smart_housing.smart_housing.model;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "landlords")
 public class Landlord {
@@ -21,6 +22,8 @@ public class Landlord {
     private String password;
 
     private String phone;
+    @Column(name = "status", columnDefinition = "ENUM('active', 'inactive') DEFAULT 'active'")
+    private String status = "active";
 
     // Getters and Setters
     public Long getLandlordId() {
@@ -56,4 +59,11 @@ public class Landlord {
     }
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

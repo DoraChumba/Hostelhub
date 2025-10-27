@@ -164,6 +164,50 @@ p{
   background: linear-gradient(135deg, #ffc400, #ffa600);
 }
 
+/* Fix image flickering and layout shift */
+.room-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background-color: #e0e0e0; /* Placeholder color while loading */
+    display: block; /* Prevent inline spacing issues */
+}
+
+/* Prevent card height changes during image load */
+.room-card {
+    background: #97939331;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 320px; /* Prevent height jumping */
+}
+
+/* Loading skeleton for images */
+.room-card img[src*="placeholder"] {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Smooth image fade-in after load */
+.room-card img {
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+}
+
+.room-card img.loaded {
+    opacity: 1;
+}
+
+
+
+
 /* ====== Footer ====== */
 .footer {
   text-align: center;

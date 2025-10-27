@@ -129,13 +129,14 @@
                 body: JSON.stringify(user)
             });
 
-            const message = await response.text();
+            const data = await response.json();
 
             if (response.ok) {
-                alert(message);
-                window.location.href = "index.html"; // redirect to home page
+                alert(data.message);
+                localStorage.setItem('landlordId', data.landlordId);
+                window.location.href = "Landlord.html";
             } else {
-                alert("Login failed: " + message);
+                alert("Login failed: " + data.message);
             }
         } catch (error) {
             console.error("Error:", error);

@@ -37,10 +37,11 @@ public class Property {
     @Column(name = "max_occupancy", nullable = false)
     private Integer maxOccupancy;
 
-    private String description;
-
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    private List<String> bills;
 
     @Column(name = "security_details")
     private String securityDetails;
@@ -48,11 +49,10 @@ public class Property {
     @JdbcTypeCode(SqlTypes.JSON)
     private List<String> amenities;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    private List<String> images;
+    // Store images as JSON array: ["image1.jpg", "image2.jpg"]
+    @Column(columnDefinition = "TEXT")
+    private String images;
 
-    @Enumerated(EnumType.STRING)
-    private PropertyStatus status;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_at", updatable = false)
@@ -61,4 +61,5 @@ public class Property {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+    
 }

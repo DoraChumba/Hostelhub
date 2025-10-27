@@ -106,12 +106,15 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(landlord)
             });
+        const data = await response.json(); // ← parse JSON, not text
 
         if (response.ok) {
+            // ✅ Save the NEW landlord's ID
+            localStorage.setItem('landlordId', data.landlordId);
             alert("Account Created Successfully!");
-            window.location.href="Landlord.html"; // Switch to login form
+            window.location.href = "Landlord.html"; // ← go to dashboard
         } else {
-            alert("Signup failed. Please try again.");
+            alert("Signup failed: " + data.message);
         }
     }
 </script>

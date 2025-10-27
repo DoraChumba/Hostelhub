@@ -1,7 +1,7 @@
 package com.smart_housing.smart_housing.model;
 
 
-public enum PropertyStatus {
+public enum RoomStatus {
     VACANT,
     BOOKED,
     OCCUPIED
