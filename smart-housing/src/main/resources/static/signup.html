@@ -96,7 +96,7 @@
 
 <div class="container">
     <!-- SIGNUP FORM (Now this appears first) -->
-    <div class="form-container" id="signupForm">
+    <form class="form-container" id="signupForm">
         <div class="icon"><i>🧑</i></div>
         <h2>Create Account</h2>
         <p>Join our community and unlock amazing benefits!</p>
@@ -105,64 +105,66 @@
         <input type="text" id="signupPhone" placeholder="Phone Number">
         <input type="password" id="signupPassword" placeholder="Password">
         <input type="password" id="signupConfirmPassword" placeholder="Confirm Password">
-        <button onclick="signup()">Create Account</button>
-        <p>Already have an account? <a href="#" onclick="toggleForm()">Sign In</a></p>
-    </div>
+        <button type="button" onclick="signup()">Create Account</button>
+        <p>Already have an account? <a href="login.html" >Sign In</a></p>
+    </form>
 
-    <!-- LOGIN FORM (Now hidden initially) -->
-    <div class="form-container hidden" id="loginForm">
-        <div class="icon"><i>🔒</i></div>
-        <h2>Welcome Back</h2>
-        <p>Enter your credentials to access your account.</p>
-        <input type="email" id="loginEmail" placeholder="Email Address">
-        <input type="password" id="loginPassword" placeholder="Password">
-        <button onclick="login()">Sign In</button>
-        <p>Don't have an account? <a href="#" onclick="toggleForm()">Sign Up</a></p>
-    </div>
-</div>
+   
 
 <script>
-    // Toggle between login & signup form
-    function toggleForm() {
-        document.getElementById("loginForm").classList.toggle("hidden");
-        document.getElementById("signupForm").classList.toggle("hidden");
-    }
+    
+  // Toggle between login & signup form
+  function toggleForm() {
+      document.getElementById("loginForm").classList.toggle("hidden");
+      document.getElementById("signupForm").classList.toggle("hidden");
+  }
 
-    // Login Functionality
-    function login() {
-        let email = document.getElementById("loginEmail").value;
-        let password = document.getElementById("loginPassword").value;
+  // Signup Functionality (Send to Spring Boot)
+  async function signup() {
+      let name = document.getElementById("signupName").value;
+      let email = document.getElementById("signupEmail").value;
+      let phone = document.getElementById("signupPhone").value;
+      let password = document.getElementById("signupPassword").value;
+      let confirmPassword = document.getElementById("signupConfirmPassword").value;
 
-        if (email === "" || password === "") {
-            alert("Please fill in all fields!");
-            return;
-        }
+      if (!name || !email || !phone || !password || !confirmPassword) {
+          alert("Please fill in all fields!");
+          return;
+      }
+      if(email ==email){
+        alert('Account already exists');
+        return
+      }
 
-        alert("Login Successful!");
-        window.location.href = "script.html"; // Redirect to another page
-    }
+      if (password !== confirmPassword) {
+          alert("Passwords do not match!");
+          return;
+      }
 
-    // Signup Functionality
-    function signup() {
-        let name = document.getElementById("signupName").value;
-        let email = document.getElementById("signupEmail").value;
-        let phone = document.getElementById("signupPhone").value;
-        let password = document.getElementById("signupPassword").value;
-        let confirmPassword = document.getElementById("signupConfirmPassword").value;
+      const student = {
+          name: name,
+          email: email,
+          phoneNumber: phone,
+          password: password
+      };
 
-        if (name === "" || email === "" || phone === "" || password === "" || confirmPassword === "") {
-            alert("Please fill in all fields!");
-            return;
-        }
+      const response = await fetch("http://127.0.0.1:8080/api/students/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(student)
+      });
 
-        if (password !== confirmPassword) {
-            alert("Passwords do not match!");
-            return;
-        }
+      if (response.ok) {
+          alert("Account Created Successfully!");
+          window.location.href="index.html"; // Switch to login form
+      } else {
+          alert("Signup failed. Please try again.");
+      }
+  }
 
-        alert("Account Created Successfully!");
-        window.location.href = "script.html"; // Redirect to another page
-    }
+  
+  
+
 
 </script>
 </body>
